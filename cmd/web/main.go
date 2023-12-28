@@ -59,6 +59,17 @@ func main() {
 	// 	http.ServeFile(w, r, "./ui/static/file.zip")
 	// }
 
+	// Initialize a new http.Server struct. We set the Addr and Handler fields
+	// that the server uses the same network address and routes as before, and
+	// the Errorlog field so that the server now uses the custom reeroLog logged
+	// in event of any problems.
+
+	srv := &http.Server{
+		Addr:     *addr,
+		ErrorLog: errorLog,
+		Handler:  mux,
+	}
+
 	// The value returned from the flag.String() function is a pointer to the flag
 	// value, not the value itself. So we need to dereference the pointer (i.e
 	// prefix it with the * symbol) before using it.
@@ -66,10 +77,7 @@ func main() {
 
 	infoLog.Printf("Starting server on %s", *addr)
 
-	// Use the http.ListenAndServe() function to start a new web server. We pass
-	// two parameters: the TCP network address to listen on (in this case ":400
-	// and the servemux we just created. If http.ListenAndServe() returns an er
-	// we use the log.Fatal() function to log the error message and exit.
-	err := http.ListenAndServe(":4000", mux)
+	//Call the listenAndServe() method on our new http.Server struct.
+	err := srv.ListenAndServe()
 	errorLog.Fatal(err)
 }
