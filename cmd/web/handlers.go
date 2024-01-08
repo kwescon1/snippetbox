@@ -16,7 +16,7 @@ const INTERNAL_SERVER_ERROR = 500
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
 
 	if r.URL.Path != "/" {
-		http.NotFound(w, r)
+		app.notFound(w) // use the notFound() helper
 
 		return
 
@@ -41,7 +41,7 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Println(err.Error())
 
-		http.Error(w, "Internal Server Error", INTERNAL_SERVER_ERROR)
+		app.serverError(w, err) // use the serverError helper
 
 		return
 	}
@@ -72,7 +72,7 @@ func (app *application) snippet(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(r.URL.Query().Get("id"))
 
 	if err != nil || id < 1 {
-		http.NotFound(w, r)
+		app.notFound(w) // Use the notFound() helper.
 
 		return
 	}
@@ -96,10 +96,7 @@ func (app *application) createSnippet(w http.ResponseWriter, r *http.Request) {
 		// w.WriteHeader(METHOD_NOT_ALLOWED)
 		// w.Write([]byte("Method Not Allowed"))
 
-		//use the http.Error() method to send a 405 status code and "Method
-		//Allowed" string as the response body.
-
-		http.Error(w, "Method Not Allowed", METHOD_NOT_ALLOWED)
+		app.clientError(w, http.StatusMethodNotAllowed) // use the clientError() helper
 
 		return
 
