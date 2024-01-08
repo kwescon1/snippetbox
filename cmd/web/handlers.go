@@ -11,7 +11,9 @@ import (
 const METHOD_NOT_ALLOWED = 405
 const INTERNAL_SERVER_ERROR = 500
 
-func home(w http.ResponseWriter, r *http.Request) {
+//change the signature of the home handler so it is defined as a method against
+// *applications
+func (app *application) home(w http.ResponseWriter, r *http.Request) {
 
 	if r.URL.Path != "/" {
 		http.NotFound(w, r)
@@ -57,7 +59,9 @@ func home(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func snippet(w http.ResponseWriter, r *http.Request) {
+// Change the signature of the snippet handler so it is defined as a method
+// against *application.
+func (app *application) snippet(w http.ResponseWriter, r *http.Request) {
 
 	// extract the value of the id parameter from the query string and try to parse
 	// convert it to an integer using the strconv.Atoi() function. If it can't parse
@@ -78,7 +82,9 @@ func snippet(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Display a specific snippet with ID %d...", id)
 }
 
-func createSnippet(w http.ResponseWriter, r *http.Request) {
+// Change the signature of the createSnippet handler so it is defined as a method
+// against *application.
+func (app *application) createSnippet(w http.ResponseWriter, r *http.Request) {
 
 	//use r.Method to check whether the request is using post or not
 	// if its not, use the w.writeHeader() method to send a 405 status code and
