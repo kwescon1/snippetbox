@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"flag"
 	_ "github.com/go-sql-driver/mysql"
+	"kod.net/snippetbox/pkg/models/mysql"
 	"log"
 	"net/http"
 	"os"
@@ -15,6 +16,7 @@ import (
 type application struct {
 	errorLog *log.Logger
 	infoLog  *log.Logger
+	snippets *mysql.SnippetModel // add a snippet field to the application struct. This will allow us to make the snippetmodel object available to our handlers
 }
 
 func main() {
@@ -63,6 +65,7 @@ func main() {
 	app := &application{
 		errorLog: errorLog,
 		infoLog:  infoLog,
+		snippets: &mysql.SnippetModel{DB: db}, // initialize a mysql.SnippetModel instance and add it to the application dependencies
 	}
 
 	// Initialize a new http.Server struct. We set the Addr and Handler fields
