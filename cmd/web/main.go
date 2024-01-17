@@ -22,7 +22,7 @@ func main() {
 	// and some short help text explaining what the flag controls. The value of
 	// flag will be stored in the addr variable at runtime.
 
-	addr := flag.String("addr", "4000", "HTTP network address")
+	addr := flag.String("addr", "localhost:4000", "HTTP network address")
 
 	// Define a new command line flag for the mysql DNS string
 	dsn := flag.String("dsn", "my_user:my_password@tcp(localhost:3308)/snippetbox?parseTime=true", "MySQL database connection string")
